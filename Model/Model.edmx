@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_EMPRESA">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="telefone" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="id_setor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_SETOR">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descricao" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_TIPO_EMPREGO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descricao" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_VAGA">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titulo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="descricao" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="salario" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="id_empresa" Type="int" Nullable="false" />
+          <Property Name="id_tipo_emprego" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_empresa_setor">
+          <End Role="TB_SETOR" Type="Self.TB_SETOR" Multiplicity="1" />
+          <End Role="TB_EMPRESA" Type="Self.TB_EMPRESA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_SETOR">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TB_EMPRESA">
+              <PropertyRef Name="id_setor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_vaga_empresa">
+          <End Role="TB_EMPRESA" Type="Self.TB_EMPRESA" Multiplicity="1" />
+          <End Role="TB_VAGA" Type="Self.TB_VAGA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_EMPRESA">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TB_VAGA">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_vaga_tipo_emprego">
+          <End Role="TB_TIPO_EMPREGO" Type="Self.TB_TIPO_EMPREGO" Multiplicity="1" />
+          <End Role="TB_VAGA" Type="Self.TB_VAGA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_TIPO_EMPREGO">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TB_VAGA">
+              <PropertyRef Name="id_tipo_emprego" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="TB_EMPRESA" EntityType="Self.TB_EMPRESA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_SETOR" EntityType="Self.TB_SETOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_TIPO_EMPREGO" EntityType="Self.TB_TIPO_EMPREGO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_VAGA" EntityType="Self.TB_VAGA" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_empresa_setor" Association="Self.fk_empresa_setor">
+            <End Role="TB_SETOR" EntitySet="TB_SETOR" />
+            <End Role="TB_EMPRESA" EntitySet="TB_EMPRESA" />
+          </AssociationSet>
+          <AssociationSet Name="fk_vaga_empresa" Association="Self.fk_vaga_empresa">
+            <End Role="TB_EMPRESA" EntitySet="TB_EMPRESA" />
+            <End Role="TB_VAGA" EntitySet="TB_VAGA" />
+          </AssociationSet>
+          <AssociationSet Name="fk_vaga_tipo_emprego" Association="Self.fk_vaga_tipo_emprego">
+            <End Role="TB_TIPO_EMPREGO" EntitySet="TB_TIPO_EMPREGO" />
+            <End Role="TB_VAGA" EntitySet="TB_VAGA" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_EMPRESA">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_setor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TB_SETOR" Relationship="Self.fk_empresa_setor" FromRole="TB_EMPRESA" ToRole="TB_SETOR" />
+          <NavigationProperty Name="TB_VAGA" Relationship="Self.fk_vaga_empresa" FromRole="TB_EMPRESA" ToRole="TB_VAGA" />
+        </EntityType>
+        <EntityType Name="TB_SETOR">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descricao" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TB_EMPRESA" Relationship="Self.fk_empresa_setor" FromRole="TB_SETOR" ToRole="TB_EMPRESA" />
+        </EntityType>
+        <EntityType Name="TB_TIPO_EMPREGO">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descricao" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TB_VAGA" Relationship="Self.fk_vaga_tipo_emprego" FromRole="TB_TIPO_EMPREGO" ToRole="TB_VAGA" />
+        </EntityType>
+        <EntityType Name="TB_VAGA">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titulo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descricao" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="salario" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="id_empresa" Type="Int32" Nullable="false" />
+          <Property Name="id_tipo_emprego" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TB_EMPRESA" Relationship="Self.fk_vaga_empresa" FromRole="TB_VAGA" ToRole="TB_EMPRESA" />
+          <NavigationProperty Name="TB_TIPO_EMPREGO" Relationship="Self.fk_vaga_tipo_emprego" FromRole="TB_VAGA" ToRole="TB_TIPO_EMPREGO" />
+        </EntityType>
+        <Association Name="fk_empresa_setor">
+          <End Role="TB_SETOR" Type="Self.TB_SETOR" Multiplicity="1" />
+          <End Role="TB_EMPRESA" Type="Self.TB_EMPRESA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_SETOR">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TB_EMPRESA">
+              <PropertyRef Name="id_setor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_vaga_empresa">
+          <End Role="TB_EMPRESA" Type="Self.TB_EMPRESA" Multiplicity="1" />
+          <End Role="TB_VAGA" Type="Self.TB_VAGA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_EMPRESA">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TB_VAGA">
+              <PropertyRef Name="id_empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_vaga_tipo_emprego">
+          <End Role="TB_TIPO_EMPREGO" Type="Self.TB_TIPO_EMPREGO" Multiplicity="1" />
+          <End Role="TB_VAGA" Type="Self.TB_VAGA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_TIPO_EMPREGO">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TB_VAGA">
+              <PropertyRef Name="id_tipo_emprego" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_EMPRESA" EntityType="Self.TB_EMPRESA" />
+          <EntitySet Name="TB_SETOR" EntityType="Self.TB_SETOR" />
+          <EntitySet Name="TB_TIPO_EMPREGO" EntityType="Self.TB_TIPO_EMPREGO" />
+          <EntitySet Name="TB_VAGA" EntityType="Self.TB_VAGA" />
+          <AssociationSet Name="fk_empresa_setor" Association="Self.fk_empresa_setor">
+            <End Role="TB_SETOR" EntitySet="TB_SETOR" />
+            <End Role="TB_EMPRESA" EntitySet="TB_EMPRESA" />
+          </AssociationSet>
+          <AssociationSet Name="fk_vaga_empresa" Association="Self.fk_vaga_empresa">
+            <End Role="TB_EMPRESA" EntitySet="TB_EMPRESA" />
+            <End Role="TB_VAGA" EntitySet="TB_VAGA" />
+          </AssociationSet>
+          <AssociationSet Name="fk_vaga_tipo_emprego" Association="Self.fk_vaga_tipo_emprego">
+            <End Role="TB_TIPO_EMPREGO" EntitySet="TB_TIPO_EMPREGO" />
+            <End Role="TB_VAGA" EntitySet="TB_VAGA" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="TB_EMPRESA">
+            <EntityTypeMapping TypeName="Model.TB_EMPRESA">
+              <MappingFragment StoreEntitySet="TB_EMPRESA">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="telefone" ColumnName="telefone" />
+                <ScalarProperty Name="id_setor" ColumnName="id_setor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_SETOR">
+            <EntityTypeMapping TypeName="Model.TB_SETOR">
+              <MappingFragment StoreEntitySet="TB_SETOR">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_TIPO_EMPREGO">
+            <EntityTypeMapping TypeName="Model.TB_TIPO_EMPREGO">
+              <MappingFragment StoreEntitySet="TB_TIPO_EMPREGO">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_VAGA">
+            <EntityTypeMapping TypeName="Model.TB_VAGA">
+              <MappingFragment StoreEntitySet="TB_VAGA">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+                <ScalarProperty Name="salario" ColumnName="salario" />
+                <ScalarProperty Name="id_empresa" ColumnName="id_empresa" />
+                <ScalarProperty Name="id_tipo_emprego" ColumnName="id_tipo_emprego" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
