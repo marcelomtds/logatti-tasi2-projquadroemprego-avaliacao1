@@ -16,9 +16,9 @@ namespace Client
         {
             if (!IsPostBack)
             {
-                txtDescricao.Focus();
                 LoadGridView();
                 LoadComboSetor();
+                txtNome.Focus();
             }
         }
         private void LoadComboSetor()
@@ -39,51 +39,66 @@ namespace Client
         }
         protected void btnConfirm_Click(object sender, EventArgs e)
         {
-            try
+            int id = Convert.ToInt32(lblSelectedId.Text);
+            if (context.TB_VAGA.FirstOrDefault(x => x.TB_EMPRESA.id == id) == null)
             {
-                int id = Convert.ToInt32(lblSelectedId.Text);
-                context.TB_EMPRESA.Remove(context.TB_EMPRESA.First(x => x.id == id));
-                context.SaveChanges();
-                SendMessage("Registro excluído com sucesso.", Color.Green);
-                LoadGridView();
-                ResetForm(true);
+                try
+                {
+                    context.TB_EMPRESA.Remove(context.TB_EMPRESA.First(x => x.id == id));
+                    context.SaveChanges();
+                    SendMessage("Registro excluído com sucesso.", Color.Green);
+                    LoadGridView();
+                    ResetForm(true);
+                }
+                catch (Exception ex)
+                {
+                    SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                SendMessage("Não é possível excluir, pois existe um vínculo com o registro.", Color.Red);
+
             }
         }
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
-            try
+            if (IsInvalidForm())
             {
-                if (!string.IsNullOrWhiteSpace(txtId.Text))
-                {
-                    int id = int.Parse(txtId.Text);
-                    TB_EMPRESA empresaResult = context.TB_EMPRESA.First(x => x.id == id);
-                    empresaResult.nome = txtDescricao.Text;
-                    empresaResult.telefone = txtTelefone.Text;
-                    empresaResult.id_setor = int.Parse(ddlSetor.SelectedValue.ToString());
-                    SendMessage("Registro alterado com sucesso.", Color.Green);
-                }
-                else
-                {
-                    TB_EMPRESA empresa = new TB_EMPRESA()
-                    {
-                        nome = txtDescricao.Text,
-                        telefone = txtTelefone.Text,
-                        id_setor = int.Parse(ddlSetor.SelectedValue.ToString())
-                    };
-                    context.TB_EMPRESA.Add(empresa);
-                    SendMessage("Registro criado com sucesso.", Color.Green);
-                }
-                context.SaveChanges();
-                ResetForm(true);
-                LoadGridView();
+                SendMessage("Campos obrigatórios não preenchidos.", Color.Red);
             }
-            catch (Exception ex)
+            else
             {
-                SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(txtId.Text))
+                    {
+                        int id = int.Parse(txtId.Text);
+                        TB_EMPRESA empresaResult = context.TB_EMPRESA.First(x => x.id == id);
+                        empresaResult.nome = txtNome.Text;
+                        empresaResult.telefone = txtTelefone.Text;
+                        empresaResult.id_setor = int.Parse(ddlSetor.SelectedValue.ToString());
+                        SendMessage("Registro alterado com sucesso.", Color.Green);
+                    }
+                    else
+                    {
+                        TB_EMPRESA empresa = new TB_EMPRESA()
+                        {
+                            nome = txtNome.Text,
+                            telefone = txtTelefone.Text,
+                            id_setor = int.Parse(ddlSetor.SelectedValue.ToString())
+                        };
+                        context.TB_EMPRESA.Add(empresa);
+                        SendMessage("Registro criado com sucesso.", Color.Green);
+                    }
+                    context.SaveChanges();
+                    ResetForm(true);
+                    LoadGridView();
+                }
+                catch (Exception ex)
+                {
+                    SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                }
             }
 
         }
@@ -98,20 +113,20 @@ namespace Client
             {
                 txtId.Text = String.Empty;
             }
-            txtDescricao.Text = String.Empty;
+            txtNome.Text = String.Empty;
             txtTelefone.Text = String.Empty;
             ddlSetor.SelectedValue = null;
-            txtDescricao.Focus();
+            txtNome.Focus();
         }
         private void LoadDataPage()
         {
             int id = Convert.ToInt32(lblSelectedId.Text);
             var result = context.TB_EMPRESA.First(x => x.id == id);
             txtId.Text = result.id.ToString();
-            txtDescricao.Text = result.nome;
+            txtNome.Text = result.nome;
             txtTelefone.Text = result.telefone;
             ddlSetor.SelectedValue = result.id_setor.ToString();
-            txtDescricao.Focus();
+            txtNome.Focus();
         }
         private void SendMessage(string message, Color color)
         {
@@ -131,6 +146,12 @@ namespace Client
             {
                 DisplayModal(this);
             }
+        }
+        private Boolean IsInvalidForm()
+        {
+            return String.IsNullOrWhiteSpace(txtNome.Text)
+                || String.IsNullOrWhiteSpace(txtTelefone.Text)
+                || String.IsNullOrWhiteSpace(ddlSetor.SelectedValue);
         }
     }
 }

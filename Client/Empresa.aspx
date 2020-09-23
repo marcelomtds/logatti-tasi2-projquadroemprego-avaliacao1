@@ -27,8 +27,8 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <asp:Label ID="lblDescricao" runat="server" Text="Descrição"></asp:Label>
-                        <asp:TextBox class="form-control" MaxLength="100" ID="txtDescricao" runat="server"></asp:TextBox>
+                        <asp:Label ID="lblNome" runat="server" Text="Nome"></asp:Label>
+                        <asp:TextBox class="form-control" MaxLength="100" ID="txtNome" runat="server"></asp:TextBox>
                     </div>
                 </div>
                 <div class="col-3">
@@ -48,7 +48,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <asp:Button class="btn btn-primary" ID="btnSalvar" runat="server" Text="Salvar" OnClick="btnSalvar_Click" />
+                        <asp:Button class="btn btn-success" ID="btnSalvar" runat="server" Text="Salvar" OnClick="btnSalvar_Click" />
                         <asp:Button class="btn btn-warning" ID="btnLimpar" runat="server" Text="Limpar" OnClick="btnLimpar_Click" />
                     </div>
                 </div>

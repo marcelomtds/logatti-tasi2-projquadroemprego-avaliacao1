@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-2">
+                <div class="col-1">
                     <div class="form-group">
                         <asp:Label ID="lblId" runat="server" Text="ID"></asp:Label>
                         <asp:TextBox class="form-control" ReadOnly="true" ID="txtId" runat="server"></asp:TextBox>
@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <asp:Button class="btn btn-primary" ID="btnSalvar" runat="server" Text="Salvar" OnClick="btnSalvar_Click" />
+                        <asp:Button class="btn btn-success" ID="btnSalvar" runat="server" Text="Salvar" OnClick="btnSalvar_Click" />
                         <asp:Button class="btn btn-warning" ID="btnLimpar" runat="server" Text="Limpar" OnClick="btnLimpar_Click" />
                     </div>
                 </div>

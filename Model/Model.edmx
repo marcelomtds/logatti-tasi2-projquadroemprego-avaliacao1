@@ -131,7 +131,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="titulo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="descricao" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descricao" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="salario" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
           <Property Name="id_empresa" Type="Int32" Nullable="false" />
           <Property Name="id_tipo_emprego" Type="Int32" Nullable="false" />

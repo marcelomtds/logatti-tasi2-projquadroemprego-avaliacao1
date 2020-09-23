@@ -29,49 +29,62 @@ namespace Client
         }
         protected void btnConfirm_Click(object sender, EventArgs e)
         {
-            try
+            int id = Convert.ToInt32(lblSelectedId.Text);
+            if (context.TB_VAGA.FirstOrDefault(x => x.TB_TIPO_EMPREGO.id == id) == null)
             {
-                int id = Convert.ToInt32(lblSelectedId.Text);
-                context.TB_TIPO_EMPREGO.Remove(context.TB_TIPO_EMPREGO.First(x => x.id == id));
-                context.SaveChanges();
-                SendMessage("Registro excluído com sucesso.", Color.Green);
-                LoadGridView();
-                ResetForm(true);
+                try
+                {
+                    context.TB_TIPO_EMPREGO.Remove(context.TB_TIPO_EMPREGO.First(x => x.id == id));
+                    context.SaveChanges();
+                    SendMessage("Registro excluído com sucesso.", Color.Green);
+                    LoadGridView();
+                    ResetForm(true);
+                }
+                catch (Exception ex)
+                {
+                    SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                SendMessage("Não é possível excluir, pois existe um vínculo com o registro.", Color.Red);
             }
         }
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
-            try
+            if (IsInvalidForm())
             {
-                if (!string.IsNullOrWhiteSpace(txtId.Text))
+                SendMessage("Campos obrigatórios não preenchidos.", Color.Red);
+            }
+            else
+            {
+                try
                 {
-                    int id = int.Parse(txtId.Text);
-                    TB_TIPO_EMPREGO tipoEmpregoResult = context.TB_TIPO_EMPREGO.First(x => x.id == id);
-                    tipoEmpregoResult.descricao = txtDescricao.Text;
-                    SendMessage("Registro alterado com sucesso.", Color.Green);
-                }
-                else
-                {
-                    TB_TIPO_EMPREGO tipoEmprego = new TB_TIPO_EMPREGO()
+                    if (!string.IsNullOrWhiteSpace(txtId.Text))
                     {
-                        descricao = txtDescricao.Text
-                    };
-                    context.TB_TIPO_EMPREGO.Add(tipoEmprego);
-                    SendMessage("Registro criado com sucesso.", Color.Green);
+                        int id = int.Parse(txtId.Text);
+                        TB_TIPO_EMPREGO tipoEmpregoResult = context.TB_TIPO_EMPREGO.First(x => x.id == id);
+                        tipoEmpregoResult.descricao = txtDescricao.Text;
+                        SendMessage("Registro alterado com sucesso.", Color.Green);
+                    }
+                    else
+                    {
+                        TB_TIPO_EMPREGO tipoEmprego = new TB_TIPO_EMPREGO()
+                        {
+                            descricao = txtDescricao.Text
+                        };
+                        context.TB_TIPO_EMPREGO.Add(tipoEmprego);
+                        SendMessage("Registro criado com sucesso.", Color.Green);
+                    }
+                    context.SaveChanges();
+                    ResetForm(true);
+                    LoadGridView();
                 }
-                context.SaveChanges();
-                ResetForm(true);
-                LoadGridView();
+                catch (Exception ex)
+                {
+                    SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                }
             }
-            catch (Exception ex)
-            {
-                SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
-            }
-
         }
         protected void btnLimpar_Click(object sender, EventArgs e)
         {
@@ -113,6 +126,10 @@ namespace Client
             {
                 DisplayModal(this);
             }
+        }
+        private Boolean IsInvalidForm()
+        {
+            return String.IsNullOrWhiteSpace(txtDescricao.Text);
         }
     }
 }

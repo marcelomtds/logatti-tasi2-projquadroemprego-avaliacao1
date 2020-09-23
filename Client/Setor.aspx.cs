@@ -29,49 +29,62 @@ namespace Client
         }
         protected void btnConfirm_Click(object sender, EventArgs e)
         {
-            try
+            int id = Convert.ToInt32(lblSelectedId.Text);
+            if (context.TB_EMPRESA.FirstOrDefault(x => x.TB_SETOR.id == id) == null)
             {
-                int id = Convert.ToInt32(lblSelectedId.Text);
-                context.TB_SETOR.Remove(context.TB_SETOR.First(x => x.id == id));
-                context.SaveChanges();
-                SendMessage("Registro excluído com sucesso.", Color.Green);
-                LoadGridView();
-                ResetForm(true);
+                try
+                {
+                    context.TB_SETOR.Remove(context.TB_SETOR.First(x => x.id == id));
+                    context.SaveChanges();
+                    SendMessage("Registro excluído com sucesso.", Color.Green);
+                    LoadGridView();
+                    ResetForm(true);
+                }
+                catch (Exception ex)
+                {
+                    SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                SendMessage("Não é possível excluir, pois existe um vínculo com o registro.", Color.Red);
             }
         }
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
-            try
+            if (IsInvalidForm())
             {
-                if (!string.IsNullOrWhiteSpace(txtId.Text))
+                SendMessage("Campos obrigatórios não preenchidos.", Color.Red);
+            }
+            else
+            {
+                try
                 {
-                    int id = int.Parse(txtId.Text);
-                    TB_SETOR setorResult = context.TB_SETOR.First(x => x.id == id);
-                    setorResult.descricao = txtDescricao.Text;
-                    SendMessage("Registro alterado com sucesso.", Color.Green);
-                }
-                else
-                {
-                    TB_SETOR setor = new TB_SETOR()
+                    if (!string.IsNullOrWhiteSpace(txtId.Text))
                     {
-                        descricao = txtDescricao.Text
-                    };
-                    context.TB_SETOR.Add(setor);
-                    SendMessage("Registro criado com sucesso.", Color.Green);
+                        int id = int.Parse(txtId.Text);
+                        TB_SETOR setorResult = context.TB_SETOR.First(x => x.id == id);
+                        setorResult.descricao = txtDescricao.Text;
+                        SendMessage("Registro alterado com sucesso.", Color.Green);
+                    }
+                    else
+                    {
+                        TB_SETOR setor = new TB_SETOR()
+                        {
+                            descricao = txtDescricao.Text
+                        };
+                        context.TB_SETOR.Add(setor);
+                        SendMessage("Registro criado com sucesso.", Color.Green);
+                    }
+                    context.SaveChanges();
+                    ResetForm(true);
+                    LoadGridView();
                 }
-                context.SaveChanges();
-                ResetForm(true);
-                LoadGridView();
+                catch (Exception ex)
+                {
+                    SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
+                }
             }
-            catch (Exception ex)
-            {
-                SendMessage($"Ocorreu um erro inesperado: {ex.Message}", Color.Red);
-            }
-
         }
         protected void btnLimpar_Click(object sender, EventArgs e)
         {
@@ -113,6 +126,10 @@ namespace Client
             {
                 DisplayModal(this);
             }
+        }
+        private Boolean IsInvalidForm()
+        {
+            return String.IsNullOrWhiteSpace(txtDescricao.Text);
         }
     }
 }
