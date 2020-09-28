@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-5">
                     <div class="form-group">
-                        <asp:Label ID="lblDescricao" runat="server" Text="Descrição"></asp:Label>
+                        <asp:Label ID="lblDescricao" runat="server" Text="Descrição*"></asp:Label>
                         <asp:TextBox class="form-control" MaxLength="100" ID="txtDescricao" runat="server"></asp:TextBox>
                     </div>
                 </div>

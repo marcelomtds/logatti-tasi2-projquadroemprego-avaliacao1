@@ -7,6 +7,10 @@
         function openModalConfirmation() {
             $('#modalConfirmation').modal('show');
         };
+
+        $(window).load(function () {
+            $("#ContentPlaceHolder1_txtTelefone").inputmask('(99) 9999-9999');
+        });
     </script>
     <div class="container">
         <form id="form" runat="server">
@@ -27,19 +31,19 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <asp:Label ID="lblNome" runat="server" Text="Nome"></asp:Label>
+                        <asp:Label ID="lblNome" runat="server" Text="Nome*"></asp:Label>
                         <asp:TextBox class="form-control" MaxLength="100" ID="txtNome" runat="server"></asp:TextBox>
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="form-group">
-                        <asp:Label ID="lblTelefone" runat="server" Text="Telefone"></asp:Label>
+                        <asp:Label ID="lblTelefone" runat="server" Text="Telefone*"></asp:Label>
                         <asp:TextBox class="form-control" MaxLength="15" ID="txtTelefone" runat="server"></asp:TextBox>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <asp:Label ID="lblSetor" runat="server" Text="Setor"></asp:Label>
+                        <asp:Label ID="lblSetor" runat="server" Text="Setor*"></asp:Label>
                         <asp:DropDownList CssClass="form-control" ID="ddlSetor" runat="server">
                         </asp:DropDownList>
                     </div>

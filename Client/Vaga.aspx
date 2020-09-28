@@ -7,6 +7,9 @@
         function openModalConfirmation() {
             $('#modalConfirmation').modal('show');
         };
+        $(function () {
+            $('#ContentPlaceHolder1_txtSalario').maskMoney();
+        })
     </script>
     <style>
         .resize-none {
@@ -32,35 +35,35 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <asp:Label ID="lblEmpresa" runat="server" Text="Empresa"></asp:Label>
+                        <asp:Label ID="lblEmpresa" runat="server" Text="Empresa*"></asp:Label>
                         <asp:DropDownList CssClass="form-control" ID="ddlEmpresa" runat="server">
                         </asp:DropDownList>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <asp:Label ID="lblTipoEmprego" runat="server" Text="Tipo de Emprego"></asp:Label>
+                        <asp:Label ID="lblTipoEmprego" runat="server" Text="Tipo de Emprego*"></asp:Label>
                         <asp:DropDownList CssClass="form-control" ID="ddlTipoEmprego" runat="server">
                         </asp:DropDownList>
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="form-group">
-                        <asp:Label ID="lblSalario" runat="server" Text="Salário"></asp:Label>
-                        <asp:TextBox class="form-control" MaxLength="9" ID="txtSalario" runat="server"></asp:TextBox>
+                        <asp:Label ID="lblSalario" runat="server" Text="Salário*"></asp:Label>
+                        <asp:TextBox data-thousands="" data-decimal="," class="form-control" MaxLength="9" ID="txtSalario" runat="server"></asp:TextBox>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <asp:Label ID="lblTitulo" runat="server" Text="Título"></asp:Label>
+                        <asp:Label ID="lblTitulo" runat="server" Text="Título*"></asp:Label>
                         <asp:TextBox class="form-control" MaxLength="100" ID="txtTitulo" runat="server"></asp:TextBox>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <asp:Label ID="lblDescricao" runat="server" Text="Descrição"></asp:Label>
+                        <asp:Label ID="lblDescricao" runat="server" Text="Descrição*"></asp:Label>
                         <asp:TextBox class="form-control resize-none" MaxLength="5000" TextMode="MultiLine" Columns="50" Rows="5" ID="txtDescricao" runat="server"></asp:TextBox>
                     </div>
                 </div>
@@ -90,7 +93,7 @@
                     <asp:BoundField DataField="id" HeaderText="ID" />
                     <asp:BoundField DataField="titulo" HeaderText="Título" />
                     <asp:BoundField DataField="descricao" HeaderText="Descrição" />
-                    <asp:BoundField DataField="salario" HeaderText="Salário" />
+                    <asp:BoundField DataField="salario" HeaderText="Salário (R$)" />
                     <asp:BoundField DataField="TB_EMPRESA.nome" HeaderText="Empresa" />
                     <asp:BoundField DataField="TB_TIPO_EMPREGO.descricao" HeaderText="Tipo de Emprego" />
                     <asp:TemplateField HeaderText="Ações">
